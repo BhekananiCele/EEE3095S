@@ -205,7 +205,7 @@ void hourInc(void){
 		//Fetch RTC Time
 		//Increase hours by 1, ensuring not to overflow
 		//Write hours back to the RTC
-		int addHours(1)
+		addHours(1);
 	}
 	lastInterruptTime = interruptTime;
 }
