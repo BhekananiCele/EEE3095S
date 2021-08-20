@@ -16,6 +16,8 @@ void hourInc(void);
 void minInc(void);
 void toggleTime(void);
 void blinkLED(void);
+void addHours(int hours);
+void addMinutes(int minutes);
 
 // define constants
 const char RTCAddr = 0x68; //Input RTC Address here 

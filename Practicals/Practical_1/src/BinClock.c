@@ -85,6 +85,25 @@ void blinkLED(void){
 	digitalWrite(LED, LOW);
 }
 
+void addHours(int hours){
+	int hourValue = wiringPiI2CReadReg8(RTC, HOUR_REGISTER);
+	hourValue +=hours;
+	if(hourValue=>24){
+		hourValue = 0;
+	}
+	wiringPiI2CWriteReg8(RTC, HOUR_REGISTER, hourValue);
+}
+
+void addMinutes(int minutes){
+	int minValue = wiringPiI2CReadReg8(RTC, MIN_REGISTER);
+	minValue +=minutes;
+	if(minValue=>60){
+		minValue = 0;
+		addHours(1)
+	}
+	wiringPiI2CWriteReg8(RTC, MIN_REGISTER, minValue);
+
+}
 /*
  * The main function
  * This function is called, and calls all relevant functions we've written
@@ -103,10 +122,9 @@ int main(void){
 	for (;;){
 		//Fetch the time from the RTC
 		//Write your logic here
-		getCurrentTime();
-		hours = HH;
-		mins = MM;
-		secs = SS;
+		hours = wiringPiI2CReadReg8(RTC, HOUR_REGISTER);
+		mins = wiringPiI2CReadReg8(RTC, MIN_REGISTER);
+		secs = wiringPiI2CReadReg8(RTC, SEC_REGISTER);
 		
 		//Toggle Seconds LED
 		//Write your logic here
