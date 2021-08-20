@@ -6,8 +6,7 @@ void getCurrentTime(void);
 int getHours(void);
 int getMins(void);
 int getSecs(void);
-int addHours(int hours);
-int addMinutes(int minutes);
-int addHours(int hours);
+void addHours(int hours);
+void addMinutes(int minutes);
 
 #endif /* CURRENTTIME_H */

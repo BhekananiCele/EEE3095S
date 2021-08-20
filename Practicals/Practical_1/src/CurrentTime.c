@@ -1,5 +1,6 @@
 #include "CurrentTime.h"
 #include <time.h>
+#include <stdio.h>
 
 int HH,MM,SS;
 
@@ -27,24 +28,24 @@ int getSecs(void){
     return SS;
 }
 
-int addHours(int hours){
+void addHours(int hours){
 	time_t rawtime;
 	struct tm * timeinfo;
 	time ( &rawtime );
 	timeinfo = localtime ( &rawtime );
 	
-	printf("Hr: Before > %d",timeinfo ->tm_min);
+	printf("Hr: Before > %d\n",timeinfo ->tm_hour);
 	timeinfo ->tm_hour +=hours; 
-	printf("Hr: After > %d",timeinfo ->tm_min);
+	printf("Hr: After > %d\n",timeinfo ->tm_hour);
 }
 
-int addMinutes(int minutes){
+void addMinutes(int minutes){
 	time_t rawtime;
 	struct tm * timeinfo;
 	time ( &rawtime );
 	timeinfo = localtime ( &rawtime );
 	
-	printf("Min: Before > %d",timeinfo ->tm_min);
+	printf("Min: Before > %d\n",timeinfo ->tm_min);
 	timeinfo ->tm_min +=minutes; 
-	printf("Min: After > %d",timeinfo ->tm_min);
+	printf("Min: After > %d\n",timeinfo ->tm_min);
 }

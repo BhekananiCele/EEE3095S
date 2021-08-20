@@ -79,7 +79,7 @@ void initGPIO(void){
 	printf("Setup done\n");
 }
 
-void BlinkLED(void){
+void blinkLED(void){
 	digitalWrite(LED, HIGH);
 	delay(1000);
 	digitalWrite(LED, LOW);
