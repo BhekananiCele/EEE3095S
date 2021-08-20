@@ -88,8 +88,8 @@ void blinkLED(void){
 void addHours(int hours){
 	int hourValue = wiringPiI2CReadReg8(RTC, HOUR_REGISTER);
 	hourValue +=hours;
-	if(hourValue=>24){
-		hourValue = 0;
+	if(hourValue>=24){
+		hourValue = 00;
 	}
 	wiringPiI2CWriteReg8(RTC, HOUR_REGISTER, hourValue);
 }
@@ -97,9 +97,9 @@ void addHours(int hours){
 void addMinutes(int minutes){
 	int minValue = wiringPiI2CReadReg8(RTC, MIN_REGISTER);
 	minValue +=minutes;
-	if(minValue=>60){
-		minValue = 0;
-		addHours(1)
+	if(minValue>=60){
+		minValue = 00;
+		addHours(1);
 	}
 	wiringPiI2CWriteReg8(RTC, MIN_REGISTER, minValue);
 
@@ -218,7 +218,7 @@ void hourInc(void){
 	//Debounce
 	long interruptTime = millis();
 
-	if (interruptTime - lastInterruptTime>200){
+	if (interruptTime - lastInterruptTime>300){
 		printf("Interrupt 1 triggered, %x\n", hours);
 		//Fetch RTC Time
 		//Increase hours by 1, ensuring not to overflow
@@ -237,7 +237,7 @@ void hourInc(void){
 void minInc(void){
 	long interruptTime = millis();
 
-	if (interruptTime - lastInterruptTime>200){
+	if (interruptTime - lastInterruptTime>300){
 		printf("Interrupt 2 triggered, %x\n", mins);
 		//Fetch RTC Time
 		//Increase minutes by 1, ensuring not to overflow
