@@ -26,3 +26,25 @@ int getMins(void){
 int getSecs(void){
     return SS;
 }
+
+int addHours(int hours){
+	time_t rawtime;
+	struct tm * timeinfo;
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+	
+	printf("Hr: Before > %d",timeinfo ->tm_min);
+	timeinfo ->tm_hour +=hours; 
+	printf("Hr: After > %d",timeinfo ->tm_min);
+}
+
+int addMinutes(int minutes){
+	time_t rawtime;
+	struct tm * timeinfo;
+	time ( &rawtime );
+	timeinfo = localtime ( &rawtime );
+	
+	printf("Min: Before > %d",timeinfo ->tm_min);
+	timeinfo ->tm_min +=minutes; 
+	printf("Min: After > %d",timeinfo ->tm_min);
+}

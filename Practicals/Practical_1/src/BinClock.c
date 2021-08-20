@@ -5,8 +5,8 @@
  * Further Modified By: Mark Njoroge 
  *
  * 
- * <STUDNUM_1> <STUDNUM_2>
- * Date
+ * <CLXBHE005> <KMPKWE002>
+ * Date: 19/08/2021
 */
 
 #include <signal.h> //for catching signals
@@ -32,7 +32,9 @@ void CleanUp(int sig){
 
 	//Set LED to low then input mode
 	//Logic here
-
+	digitalWrite(LED, LOW);
+	pinMode(LED, OUTPUT);
+	
 
 	for (int j=0; j < sizeof(BTNS)/sizeof(BTNS[0]); j++) {
 		pinMode(BTNS[j],INPUT);
@@ -56,7 +58,7 @@ void initGPIO(void){
 	
 	//Set up the LED
 	//Write your Logic here
-
+	pinMode(LED, OUTPUT);
 	
 	printf("LED and RTC done\n");
 	
@@ -68,6 +70,8 @@ void initGPIO(void){
 	
 	//Attach interrupts to Buttons
 	//Write your logic here
+	wiringPiISR(BTNS[0],INT_EDGE_FALLING, hourInc);
+	wiringPiISR(BTNS[1],INT_EDGE_FALLING, minInc);
 	
 
 
@@ -75,6 +79,11 @@ void initGPIO(void){
 	printf("Setup done\n");
 }
 
+void BlinkLED(void){
+	digitalWrite(LED, HIGH);
+	delay(1000);
+	digitalWrite(LED, LOW);
+}
 
 /*
  * The main function
@@ -94,9 +103,14 @@ int main(void){
 	for (;;){
 		//Fetch the time from the RTC
 		//Write your logic here
+		getCurrentTime();
+		hours = HH;
+		mins = MM;
+		secs = SS;
 		
 		//Toggle Seconds LED
 		//Write your logic here
+		blinkLED();
 		
 		// Print out the time we have stored on our RTC
 		printf("The current time is: %d:%d:%d\n", hours, mins, secs);
@@ -191,6 +205,7 @@ void hourInc(void){
 		//Fetch RTC Time
 		//Increase hours by 1, ensuring not to overflow
 		//Write hours back to the RTC
+		int addHours(1)
 	}
 	lastInterruptTime = interruptTime;
 }
@@ -209,6 +224,7 @@ void minInc(void){
 		//Fetch RTC Time
 		//Increase minutes by 1, ensuring not to overflow
 		//Write minutes back to the RTC
+		addMinutes(1);
 	}
 	lastInterruptTime = interruptTime;
 }
