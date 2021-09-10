@@ -15,6 +15,7 @@ trans_pin = None
 guessed_number = 0
 startTIme = None
 value = None
+falling = True
 
 # DEFINE THE PINS USED HERE
 LED_value = [11, 13, 15]
@@ -102,16 +103,9 @@ def setup():
     trans_pin = GPIO.PWM(transistor, 2000)
     
     # Setup debouncing and callbacks
-    GPIO.add_event_detect(btn_submit, GPIO.FALLING, callback=getStartTime, bouncetime=300)
-    GPIO.add_event_detect(btn_submit, GPIO.RISING, callback=btn_guess_pressed, bouncetime=300)
+    GPIO.add_event_detect(btn_submit, GPIO.BOTH, callback=btn_guess_pressed, bouncetime=300)
     GPIO.add_event_detect(btn_increase, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=300)
-    GPIO.add_event_detect(btn_submit, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=300)
-
-
-
-def getStartTime():
-    global startTime
-    startTIme = datetime.datetime.now()
+        
 # Load high scores
 def fetch_scores():
     # get however many scores there are
@@ -163,31 +157,39 @@ def btn_increase_pressed(channel):
 # Guess button
 def btn_guess_pressed(channel):
     global value
-    # If they've pressed and held the button, clear up the GPIO and take them back to the menu screen
-    endDT = datetime.datetime.now()
-    if(decimal.Decimal((endDT-startTIme).seconds)>2):
-        end_of_game = True;
-    else:
-         # Compare the actual value with the user value displayed on the LEDs
-        if(value == guessed_number):
-             # if it's an exact guess:
-            # - Disable LEDs and Buzzer
-            GPIO.output(LED_value[0],0)
-            GPIO.output(LED_value[1],0)
-            GPIO.output(LED_value[2],0)            
-            trans_pin.stop()
-            # - tell the user and prompt them for a name            
+    global startTime
+    global falling
+    
+    if(falling):   
+        startTIme = datetime.datetime.now()
+        falling = False
+    else: 
+        # If they've pressed and held the button, clear up the GPIO and take them back to the menu screen
+        endDT = datetime.datetime.now()
+        falling = True   
+        if(decimal.Decimal((endDT-startTIme).seconds)>2):
+            end_of_game = True;
         else:
-            # Change the PWM LED
-            # if it's close enough, adjust the buzzer            
-            accuracy_leds()
-            trigger_buzzer()
-              
-    # - tell the user and prompt them for a name
-    # - fetch all the scores
-    # - add the new score
-    # - sort the scores
-    # - Store the scores back to the EEPROM, being sure to update the score count
+             # Compare the actual value with the user value displayed on the LEDs
+            if(value == guessed_number):
+                 # if it's an exact guess:
+                # - Disable LEDs and Buzzer
+                GPIO.output(LED_value[0],0)
+                GPIO.output(LED_value[1],0)
+                GPIO.output(LED_value[2],0)            
+                trans_pin.stop()
+                # - tell the user and prompt them for a name            
+            else:
+                # Change the PWM LED
+                # if it's close enough, adjust the buzzer            
+                accuracy_leds()
+                trigger_buzzer()
+           
+        # - tell the user and prompt them for a name
+        # - fetch all the scores
+        # - add the new score
+        # - sort the scores
+        # - Store the scores back to the EEPROM, being sure to update the score count
 
 # LED Brightness
 def accuracy_leds():
