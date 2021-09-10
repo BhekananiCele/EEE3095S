@@ -2,7 +2,7 @@ import datetime
 import time
 import decimal
 currentDT = datetime.datetime.now()
-time.sleep(2);
+time.sleep(1.5);
 endDT = datetime.datetime.now()
 
 

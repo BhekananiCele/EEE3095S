@@ -7,6 +7,7 @@ import os
 import datetime
 import time
 import decimal
+import time
 
 # some global variables that need to change as we run the program
 end_of_game = None  # set if the user wins or ends the game
@@ -15,7 +16,6 @@ trans_pin = None
 guessed_number = 0
 startTIme = None
 value = None
-falling = True
 
 # DEFINE THE PINS USED HERE
 LED_value = [11, 13, 15]
@@ -157,39 +157,30 @@ def btn_increase_pressed(channel):
 # Guess button
 def btn_guess_pressed(channel):
     global value
-    global startTime
-    global falling
-    
-    if(falling):   
-        startTIme = datetime.datetime.now()
-        falling = False
-    else: 
-        # If they've pressed and held the button, clear up the GPIO and take them back to the menu screen
-        endDT = datetime.datetime.now()
-        falling = True   
-        if(decimal.Decimal((endDT-startTIme).seconds)>2):
-            end_of_game = True;
+    time.sleep(1.8)   
+    if(GPIO.input(btn_submit)>0.5):
+        end_of_game = True;
+    else:
+         # Compare the actual value with the user value displayed on the LEDs
+        if(value == guessed_number):
+             # if it's an exact guess:
+            # - Disable LEDs and Buzzer
+            GPIO.output(LED_value[0],0)
+            GPIO.output(LED_value[1],0)
+            GPIO.output(LED_value[2],0)            
+            trans_pin.stop()
+            # - tell the user and prompt them for a name            
         else:
-             # Compare the actual value with the user value displayed on the LEDs
-            if(value == guessed_number):
-                 # if it's an exact guess:
-                # - Disable LEDs and Buzzer
-                GPIO.output(LED_value[0],0)
-                GPIO.output(LED_value[1],0)
-                GPIO.output(LED_value[2],0)            
-                trans_pin.stop()
-                # - tell the user and prompt them for a name            
-            else:
-                # Change the PWM LED
-                # if it's close enough, adjust the buzzer            
-                accuracy_leds()
-                trigger_buzzer()
-           
-        # - tell the user and prompt them for a name
-        # - fetch all the scores
-        # - add the new score
-        # - sort the scores
-        # - Store the scores back to the EEPROM, being sure to update the score count
+            # Change the PWM LED
+            # if it's close enough, adjust the buzzer            
+            accuracy_leds()
+            trigger_buzzer()
+       
+    # - tell the user and prompt them for a name
+    # - fetch all the scores
+    # - add the new score
+    # - sort the scores
+    # - Store the scores back to the EEPROM, being sure to update the score count
 
 # LED Brightness
 def accuracy_leds():
