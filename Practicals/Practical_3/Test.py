@@ -1,14 +1,10 @@
+import datetime
+import time
+import decimal
+currentDT = datetime.datetime.now()
+time.sleep(2);
+endDT = datetime.datetime.now()
 
-def toBinary(decimal):
-    binary = []
-    for bit in bin(decimal).replace("0b", "").zfill(3):
-        binary.append(eval(bit))
-    return binary
-      
-generate_number =0;  
-def btn_increase_pressed():
-  
-    generate_number = generate_number + 1
 
-btn_increase_pressed()
-print(generate_number)
+
+print(decimal.Decimal((endDT-currentDT).seconds))
