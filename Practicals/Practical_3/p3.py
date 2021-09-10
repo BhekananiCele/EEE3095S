@@ -1,3 +1,4 @@
+
 # Import libraries
 import RPi.GPIO as GPIO
 import random
@@ -34,7 +35,8 @@ def welcome():
 # Print the game menu
 def menu():
     global end_of_game
-    option = input("Select an option:   H - View High Scores     P - Play Game       Q - Quit\n")
+    option = input("Select an option:   H - View High Scores     P - Play Game       Q - Quit\n>>")
+    print(option)
     option = option.upper()
     if option == "H":
         os.system('clear')
@@ -72,7 +74,11 @@ def setup():
     #LEDS Setup
     for pinNo in LED_value:
         GPIO.setup(pinNo, GPIO.OUT)
-    GPIO.setup(accuracy_leds, GPIO.OUT)
+    GPIO.setup(LED_accuracy, GPIO.OUT)
+
+    for pinNo in LED_value:
+        GPIO.output(pinNo, 0)
+    GPIO.output(LED_accuracy, 0)
     
     #Button Setup
     GPIO.setup(btn_submit, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -82,8 +88,8 @@ def setup():
     pwm_led = GPIO.PWM(LED_accuracy, 100)
     
     # Setup debouncing and callbacks
-    GIO.add_event_detect(btn_submit, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=300)
-    GIO.add_event_detect(btn_increase, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=300)
+    GPIO.add_event_detect(btn_submit, GPIO.FALLING, callback=btn_guess_pressed, bouncetime=300)
+    GPIO.add_event_detect(btn_increase, GPIO.FALLING, callback=btn_increase_pressed, bouncetime=300)
 
 
 
@@ -121,17 +127,19 @@ def toBinary(decimal):
 
 # Increase button pressed
 def btn_increase_pressed(channel):
-    global generate_number 
+    global guessed_number
     # Increase the value shown on the LEDs
     # You can choose to have a global variable store the user's current guess, 
     # or just pull the value off the LEDs when a user makes a guess    
-    generate_number+=1
-    LEDOutPut = toBinary(generate_number)
+    guessed_number +=1
+    LEDOutPut = toBinary(guessed_number)
+    print(LEDOutPut)
     
-    GPIO.output(LED_value[0], LEDOutPut[0])
-    GPIO.output(LED_value[1], LEDOutPut[1])
-    GPIO.output(LED_value[2], LEDOutPut[2])
-
+    GPIO.output(LED_value[0],LEDOutPut[0])
+    GPIO.output(LED_value[1],LEDOutPut[1])
+    GPIO.output(LED_value[2],LEDOutPut[2])
+    if(guessed_number >= 7):
+        guessed_number =0
 
 # Guess button
 def btn_guess_pressed(channel):
