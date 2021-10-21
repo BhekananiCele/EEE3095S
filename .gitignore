@@ -54,3 +54,6 @@ dkms.conf
 obj/
 bin/
 
+# Video Files
+**/*.mp4
+
