@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EEE3095S - Prac6</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/mainpage.css') }}">
+  </head>
+  <body>
+    <div>
+      <form action="/Home" method="post" style="display: inline-block">
+        <button name="Home" type="submit" class="button button2">Home</button>
+      </form>
+      <form action="/SensorOn" method="post" style="display: inline-block">
+        <button name="SensorOn" type="submit" class="button button2">Sensors On</button>
+      </form>
+      <form action="/SensorOff" method="post" style="display: inline-block">
+        <button name="SensorOff" type="submit" class="button button2">Sensors Off</button>
+      </form>
+      <form action="/Status" method="post" style="display: inline-block">
+        <button name="Status" type="submit" class="button button2">Status</button>
+      </form>
+      <form action="/LogCheck" method="post" style="display: inline-block">
+        <button name="LogCheck" type="submit" class="button button2">Log Check</button>
+      </form>
+      <form action="/LogDownload" method="post" style="display: inline-block">
+        <button name="LogDownload" type="submit" class="button button2">Log Download</button>
+      </form>
+      <form action="/Exit" method="post" style="display: inline-block">
+        <button name="Exit" type="submit" class="button button2">Exit</button>
+      </form>
+      {{status | safe}}
+    </div>
+    <br />
+    {{body | safe }}
+  </body>
+</html>

@@ -4,9 +4,7 @@ import digitalio
 import board
 import adafruit_mcp3xxx.mcp3008 as MCP
 from adafruit_mcp3xxx.analog_in import AnalogIn
-import threading
-import datetime
-import time
+from Client import *
 
 # some global variables that need to change as we run the program
 frequencyOfReadingData = 10.0
@@ -63,11 +61,13 @@ def convertToTemp(tempArg, places=2):
 # Fuction, it uses threads to read data from the sensors
 def main():
     global startTime
-    runTime = (datetime.datetime.now() - startTime).total_seconds() # Calculates run time
+    runTime = (datetime.now() - startTime).total_seconds() # Calculates run time
     global frequencyOfReadingData
     tempADC_Value, tempVoltage = fetch_sensor_vals(1)
     lightADC_Value, lightVolatge = fetch_sensor_vals(2)
-    print("{:<11d}{:<16d}{:05.2f} C{:>10d}".format(int(runTime), tempADC_Value, convertToTemp(tempADC_Value,2), lightADC_Value))
+    
+    sendDataToServer(str(tempADC_Value) +" "+ str(lightADC_Value))
+    #print("{:<11d}{:<16d}{:05.2f} C{:>10d}".format(int(runTime), tempADC_Value, convertToTemp(tempADC_Value,2), lightADC_Value))
     
     thread = threading.Timer(frequencyOfReadingData, main)
     thread.daemon = True  # Daemon threads exit when the program does
@@ -79,11 +79,17 @@ def printHeading():
     
 if __name__ == "__main__":
     try:
+        print("Client Running")
+        
+        thread = threading.Thread(target=ListenToServer)
+        thread.daemon = True
+        thread.start()
+        
         setup()
-        printHeading()
-        startTime = datetime.datetime.now()
-        main()         
-        # Tell our program to run indefinitely
+        #printHeading()
+        startTime = datetime.now()
+        main()
+                
         while True:
             pass
     except Exception as e:

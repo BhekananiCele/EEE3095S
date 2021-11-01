@@ -1,0 +1,55 @@
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    border-radius: 10%;
+  }
+
+  .button2 {
+    background-color: #008CBA; 
+    color: white; 
+    border: 2px solid #008CBA;
+  }
+
+  .button2:hover {
+    background-color: #4CAF50;
+    color: white;
+  }
+
+  .status-online {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    border-radius: 10%;
+    border: 2px solid #4CAF50;
+  }
+
+  .status-offline{
+    background-color: #ad3128; /* Green */
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    transition-duration: 0.4s;
+    border-radius: 10%;
+    border: 2px solid #ad3128;
+  }
